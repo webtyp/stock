@@ -8,10 +8,10 @@ import (
 func TestLot_Expired(t *testing.T) {
 	now := int64(1000)
 	tests := []struct {
-		name string
-		lot  stock.Lot
-		now  int64
-		want bool
+		name   string
+		lot    stock.Lot
+		now    int64
+		want   bool
 	}{
 		{"Expiry 0 never expires", stock.Lot{Expiry: 0}, now, false},
 		{"Not expired yet", stock.Lot{Expiry: 2000}, now, false},

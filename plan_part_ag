@@ -1,0 +1,13 @@
+ from, first expiry first out.
+// Rules, all of them:
+//   - quantity <= 0 → ErrQuantity.
+//   - Lots with Quantity <= 0 and expired lots (Lot.Expired(now)) are ignored.
+//   - The remaining lots are used in order of Expiry ascending, a lot that does not expire (Expiry 0) LAST; lots with
+//     the same Expiry are used in order of ID ascending (byte order).
+//   - Each lot gives min(its Quantity, what is still missing); the Take list never holds a zero quantity.
+//   - If the usable stock is smaller than quantity (by more than the package's comparison tolerance, one unexported
+//     named constant of 1e-9) → ErrInsufficient and the returned slice is nil: allocation is all-or-nothing.
+//   - The input slice is never modified or reordered.
+func Allocate(lots []Lot, quantity float64, now int64) ([]Take, error)
+
+// Apply returns the level after a movement of `quantity` in direction d is

@@ -20,10 +20,9 @@ Pure stock rules shared by pharmacy and supply modules: movement directions, fir
 package main
 
 import (
-	"fmt"
-	"time"
-
+	"webtyp.com/fmt"
 	"webtyp.com/stock"
+	"webtyp.com/time"
 )
 
 func main() {

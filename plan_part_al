@@ -1,0 +1,17 @@
+o sequence of outputs ever leaves a lot with a negative quantity.
+
+## Stages
+
+### Stage 1 — the rules (`stock.go`, replacing the stub)
+
+Delete the `gonew` stub content and write `stock.go` (types, constants, `Error`), `lot.go` (`Lot`, `Take`,
+`Expired`, `ExpiresWithin`), `allocate.go` (`Allocate`), `apply.go` (`Apply`, the tolerance constant) exactly as the
+API above. Update `go.mod` (`go 1.26.8`; dependencies: none for the root package).
+
+### Stage 2 — tests of the rules (`tests/`, external package `stock_test`, standard library only)
+
+One table-driven test per function, through the exported API only:
+- `Movement.Direction`: every constant, plus an unknown movement (`ok == false`).
+- `Lot.Expired`, `ExpiresWithin` including `Expiry == 0`, equal-to-now, negative days.
+- `Allocate`: the eight rules of its comment, one case each (order by expiry; non-expiring last; tie by ID; skips
+  e
