@@ -49,8 +49,8 @@ func TestAllocate(t *testing.T) {
 		{
 			name: "skips expired and empty lots",
 			lots: []stock.Lot{
-				{ID: "A", Expiry: 500, Quantity: 10}, // expired
-				{ID: "B", Expiry: 2000, Quantity: 0}, // empty
+				{ID: "A", Expiry: 500, Quantity: 10},  // expired
+				{ID: "B", Expiry: 2000, Quantity: 0},  // empty
 				{ID: "C", Expiry: 2000, Quantity: -5}, // empty
 				{ID: "D", Expiry: 2000, Quantity: 5},
 			},
