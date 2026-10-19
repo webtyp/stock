@@ -3,8 +3,10 @@ PLAN: "feat: stock v0.1.0 — movement directions, first-expiry-first-out alloca
 TAG: v0.1.0
 EXECUTOR: jules
 REVIEWER: none
-STATUS: running
+STATUS: review
 SESSION: 18302094717612382476
+PR: https://github.com/webtyp/stock/pull/1
+REVIEWED_COMMIT: dbd6e61e8ab9ec16a98294972279c47da4b8926f
 ---
 
 > Read AGENTS.md at the repo root before any change.
