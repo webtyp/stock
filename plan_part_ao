@@ -1,3 +1,0 @@
-s/apply_test.go` |
-| 3 | conformance suite | `stocktest/stocktest.go`, `tests/stocktest_test.go` |
-| 4 | docs | `README.md`, `docs/ARCHITECTURE.md` |
