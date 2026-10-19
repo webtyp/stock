@@ -41,13 +41,21 @@ func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
 	t.Run("first_expiry_first_out", func(t *testing.T) {
 		l := newLedger(t)
 		err := l.Receive("prod1", "loc1", "lotA", future+10, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		err = l.Receive("prod1", "loc1", "lotB", future, 10) // Earliest
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		err = l.Receive("prod1", "loc1", "lotC", future+20, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		err = l.Receive("prod1", "loc1", "lotD", 0, 10) // Non-expiring
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		takes, err := l.Output("prod1", "loc1", stock.Sale, 25)
 		if err != nil {
@@ -73,7 +81,9 @@ func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
 	t.Run("expired_lots_are_not_used", func(t *testing.T) {
 		l := newLedger(t)
 		err := l.Receive("prod1", "loc1", "lotA", past, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		_, err = l.Output("prod1", "loc1", stock.Sale, 5)
 		if err != stock.ErrInsufficient {
@@ -84,7 +94,9 @@ func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
 	t.Run("insufficient_is_atomic", func(t *testing.T) {
 		l := newLedger(t)
 		err := l.Receive("prod1", "loc1", "lotA", future, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		_, err = l.Output("prod1", "loc1", stock.Sale, 15)
 		if err != stock.ErrInsufficient {
@@ -92,13 +104,17 @@ func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
 		}
 
 		lots, err := l.Lots("prod1", "loc1")
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		if len(lots) != 1 || lots[0].Quantity != 10 {
 			t.Fatalf("lots changed after failed output: %v", lots)
 		}
 
 		entries, err := l.Entries("prod1")
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		if len(entries) != 1 {
 			t.Fatalf("entries changed after failed output: %v", entries)
 		}
@@ -107,19 +123,27 @@ func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
 	t.Run("transfer_moves_the_same_lots", func(t *testing.T) {
 		l := newLedger(t)
 		err := l.Receive("prod1", "loc1", "lotA", future, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		err = l.Transfer("prod1", "loc1", "loc2", 5)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		loc1Lots, err := l.Lots("prod1", "loc1")
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		if len(loc1Lots) != 1 || loc1Lots[0].Quantity != 5 {
 			t.Fatalf("loc1 lots wrong: %v", loc1Lots)
 		}
 
 		loc2Lots, err := l.Lots("prod1", "loc2")
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		if len(loc2Lots) != 1 || loc2Lots[0].Quantity != 5 || loc2Lots[0].ID != "lotA" || loc2Lots[0].Expiry != future {
 			t.Fatalf("loc2 lots wrong: %v", loc2Lots)
 		}
@@ -133,12 +157,18 @@ func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
 	t.Run("quantities_are_positive_and_directions_follow_the_type", func(t *testing.T) {
 		l := newLedger(t)
 		err := l.Receive("prod1", "loc1", "lotA", future, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		_, err = l.Output("prod1", "loc1", stock.Sale, 5)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		entries, err := l.Entries("prod1")
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		for _, e := range entries {
 			if e.Quantity <= 0 {
 				t.Fatalf("entry quantity <= 0: %v", e)
@@ -153,21 +183,33 @@ func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
 	t.Run("ledger_balances", func(t *testing.T) {
 		l := newLedger(t)
 		err := l.Receive("prod1", "loc1", "lotA", future, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		err = l.Receive("prod1", "loc2", "lotB", future, 20)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		_, err = l.Output("prod1", "loc1", stock.Sale, 5)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		err = l.Transfer("prod1", "loc2", "loc1", 5)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		entries, err := l.Entries("prod1")
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		locs := []string{"loc1", "loc2"}
 		for _, loc := range locs {
 			lots, err := l.Lots("prod1", loc)
-			if err != nil { t.Fatal(err) }
+			if err != nil {
+				t.Fatal(err)
+			}
 			var lotSum float64
 			for _, lot := range lots {
 				lotSum += lot.Quantity
@@ -191,14 +233,20 @@ func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
 	t.Run("never_negative", func(t *testing.T) {
 		l := newLedger(t)
 		err := l.Receive("prod1", "loc1", "lotA", future, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		// draining exactly
 		_, err = l.Output("prod1", "loc1", stock.Sale, 10)
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 
 		lots, err := l.Lots("prod1", "loc1")
-		if err != nil { t.Fatal(err) }
+		if err != nil {
+			t.Fatal(err)
+		}
 		for _, lot := range lots {
 			if lot.Quantity < 0 {
 				t.Fatalf("lot quantity < 0: %v", lot)
