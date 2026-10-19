@@ -3,6 +3,8 @@ PLAN: "feat: stock v0.1.0 — movement directions, first-expiry-first-out alloca
 TAG: v0.1.0
 EXECUTOR: jules
 REVIEWER: none
+STATUS: running
+SESSION: 18302094717612382476
 ---
 
 > Read AGENTS.md at the repo root before any change.
