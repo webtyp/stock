@@ -1,3 +1,5 @@
+//go:build !wasm
+
 package stock_test
 
 import (
