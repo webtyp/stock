@@ -1,0 +1,14 @@
+xpired; skips empty; exact fit; insufficient returns `nil` and `ErrInsufficient`; input not modified;
+  `quantity <= 0`).
+- `Apply`: in, out, out to exactly zero, out beyond, tolerance near zero, bad direction, bad quantity.
+
+### Stage 3 — `stocktest` and its proof
+
+Write `stocktest/stocktest.go` (the `Entry`, `Ledger`, `Run` above; `//go:build !wasm`). Prove the suite against a
+reference implementation **inside this repo's tests**: `tests/stocktest_test.go` defines `memLedger` (slices only, no
+maps) that implements `stocktest.Ledger` by calling `stock.Allocate` and `stock.Apply`, and runs
+`stocktest.Run(t, func(t *testing.T) stocktest.Ledger { return &memLedger{} })`. Do not write a negative test of the suite itself; the positive run against `memLedger` is its proof.
+
+### Stage 4 — docs
+
+`README.md` (what it is, the rules in one table, a 15-line example of a module using `Allocate`/

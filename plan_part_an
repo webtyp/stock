@@ -1,0 +1,19 @@
+`Apply`),
+`docs/ARCHITECTURE.md` (why pure rules, the ledger left to each module, tolerance, time in Unix seconds, the
+conformance suite and how a module adopts it). Permanent docs never link `docs/PLAN.md`.
+
+## Delivery check
+
+```
+gotest                                                       # vet, race, tests and wasm green
+GOOS=js GOARCH=wasm go vet ./...                             # the root package builds for wasm (stocktest is !wasm)
+grep -rn "map\[\|reflect\|sort.Slice\|\"errors\"\|\"strings\"\|\"strconv\"" --include=*.go . | grep -v _test   # → empty
+git diff --stat main                                         # only the files of the stages
+```
+
+## Stages table
+
+| # | Stage | Files |
+|---|---|---|
+| 1 | the rules | `stock.go`, `lot.go`, `allocate.go`, `apply.go`, `go.mod` |
+| 2 | tests of the rules | `tests/movement_test.go`, `tests/lot_test.go`, `tests/allocate_test.go`, `test

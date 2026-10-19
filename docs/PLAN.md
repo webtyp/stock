@@ -237,3 +237,6 @@ git diff --stat main                                         # only the files of
 | 2 | tests of the rules | `tests/movement_test.go`, `tests/lot_test.go`, `tests/allocate_test.go`, `tests/apply_test.go` |
 | 3 | conformance suite | `stocktest/stocktest.go`, `tests/stocktest_test.go` |
 | 4 | docs | `README.md`, `docs/ARCHITECTURE.md` |
+
+## Executor notes
+None
