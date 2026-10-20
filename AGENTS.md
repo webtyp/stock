@@ -27,6 +27,6 @@
   `sort.Slice`), no stdlib `errors`/`strings`/`strconv`.
 - Errors are typed string constants (`type Error string`), compared by value; never `errors.New`.
 - Quantities are `float64` (a unit may be a millilitre or a tablet); the comparison tolerance is one named constant.
-- Time is always **Unix seconds UTC** passed in as `now`; the package never reads a clock.
+- Time is a date, `time.Unix` (`webtyp.com/time`), passed in as `now`; the package never reads a clock.
 - `stocktest` is the conformance suite every ledger implementation must pass (`//go:build !wasm`, it imports
   `testing`). It is part of the public contract: a rule changes here first, then in the modules.

@@ -20,7 +20,7 @@ type memLedger struct {
 	entries []stocktest.Entry
 }
 
-func (m *memLedger) Receive(product, location, lot string, expiry int64, quantity float64) error {
+func (m *memLedger) Receive(product, location, lot string, expiry time.Unix, quantity float64) error {
 	m.entries = append(m.entries, stocktest.Entry{
 		Type:     stock.Purchase,
 		Location: location,
@@ -59,7 +59,7 @@ func (m *memLedger) Output(product, location string, mov stock.Movement, quantit
 		}
 	}
 
-	takes, err := stock.Allocate(lots, quantity, time.Now()/1000000000) // webtyp.com/time counts nanoseconds; expiries are Unix seconds
+	takes, err := stock.Allocate(lots, quantity, time.NowUnix())
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func (m *memLedger) Transfer(product, from, to string, quantity float64) error {
 	}
 
 	for _, take := range takes {
-		var expiry int64
+		var expiry time.Unix
 		for _, l := range m.lots {
 			if l.Product == product && l.Location == from && l.ID == take.LotID {
 				expiry = l.Expiry

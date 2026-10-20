@@ -3,6 +3,7 @@ package stock_test
 import (
 	"testing"
 	"webtyp.com/stock"
+	"webtyp.com/time"
 )
 
 func takesEqual(a, b []stock.Take) bool {
@@ -30,7 +31,7 @@ func lotsEqual(a, b []stock.Lot) bool {
 }
 
 func TestAllocate(t *testing.T) {
-	now := int64(1000)
+	now := time.Unix(1000)
 
 	tests := []struct {
 		name      string

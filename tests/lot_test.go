@@ -3,14 +3,15 @@ package stock_test
 import (
 	"testing"
 	"webtyp.com/stock"
+	"webtyp.com/time"
 )
 
 func TestLot_Expired(t *testing.T) {
-	now := int64(1000)
+	now := time.Unix(1000)
 	tests := []struct {
 		name string
 		lot  stock.Lot
-		now  int64
+		now  time.Unix
 		want bool
 	}{
 		{"Expiry 0 never expires", stock.Lot{Expiry: 0}, now, false},
@@ -29,20 +30,20 @@ func TestLot_Expired(t *testing.T) {
 }
 
 func TestLot_ExpiresWithin(t *testing.T) {
-	now := int64(1000000)
+	now := time.Unix(1000000)
 	tests := []struct {
 		name string
 		lot  stock.Lot
-		now  int64
+		now  time.Unix
 		days int
 		want bool
 	}{
 		{"Negative days", stock.Lot{Expiry: now + 10}, now, -1, false},
 		{"Expiry 0 never expires", stock.Lot{Expiry: 0}, now, 10, false},
 		{"Already expired", stock.Lot{Expiry: now - 10}, now, 10, true},
-		{"Expires exactly at boundary", stock.Lot{Expiry: now + 5*stock.SecondsPerDay}, now, 5, true},
-		{"Expires after boundary", stock.Lot{Expiry: now + 6*stock.SecondsPerDay}, now, 5, false},
-		{"Expires well within", stock.Lot{Expiry: now + 1*stock.SecondsPerDay}, now, 5, true},
+		{"Expires exactly at boundary", stock.Lot{Expiry: now + 5*time.Day}, now, 5, true},
+		{"Expires after boundary", stock.Lot{Expiry: now + 6*time.Day}, now, 5, false},
+		{"Expires well within", stock.Lot{Expiry: now + 1*time.Day}, now, 5, true},
 	}
 
 	for _, tt := range tests {

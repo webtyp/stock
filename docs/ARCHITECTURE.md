@@ -14,7 +14,7 @@ Float operations use an internal tolerance of `1e-9` for comparisons to handle s
 
 ## Time
 
-Time is always passed in as Unix seconds UTC (`now int64`). The package never reads a system clock. This ensures that the functions remain pure and reproducible. **`webtyp.com/time.Now()` returns Unix nanoseconds**: a caller converts it (`time.Now() / 1000000000`) before passing it as `now` or computing an expiry; comparing a nanosecond clock with a second expiry makes every dated lot look expired.
+Time is a date, `time.Unix` from `webtyp.com/time`, passed in as `now`; expiries are `time.Unix` too and days are counted with `time.Day`. The package never reads a system clock, so its functions stay pure and reproducible. A caller passes `time.NowUnix()`; the type makes it impossible to pass a nanosecond instant.
 
 ## Conformance Suite
 

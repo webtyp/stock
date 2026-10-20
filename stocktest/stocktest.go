@@ -8,9 +8,6 @@ import (
 	"webtyp.com/time"
 )
 
-// nanosPerSecond converts webtyp.com/time.Now() (Unix nanoseconds) to the Unix seconds of an expiry.
-const nanosPerSecond = 1000000000
-
 // Entry is one stored movement, as the ledger reports it.
 type Entry struct {
 	Type     stock.Movement
@@ -22,8 +19,8 @@ type Entry struct {
 // Ledger is the behaviour under test. product / location / lot are ids chosen by the test.
 type Ledger interface {
 	// Receive adds stock to the (location, lot) of a product and appends a PURCHASE entry.
-	// The lot is created if it does not exist. expiry is Unix seconds UTC; 0 = does not expire.
-	Receive(product, location, lot string, expiry int64, quantity float64) error
+	// The lot is created if it does not exist. expiry is a date; 0 = does not expire.
+	Receive(product, location, lot string, expiry time.Unix, quantity float64) error
 	// Output takes stock out by first expiry first out and returns what was taken, one Take per lot.
 	// m is Sale, InternalUse or AdjustOut.
 	Output(product, location string, m stock.Movement, quantity float64) ([]stock.Take, error)
@@ -37,9 +34,9 @@ type Ledger interface {
 
 // Run executes the whole suite. newLedger returns a fresh, empty ledger for each subtest.
 func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
-	now := time.Now() / nanosPerSecond // webtyp.com/time counts nanoseconds; every expiry here is Unix seconds
-	past := now - 365*stock.SecondsPerDay
-	future := now + 365*stock.SecondsPerDay
+	now := time.NowUnix()
+	past := now - 365*time.Day
+	future := now + 365*time.Day
 
 	t.Run("first_expiry_first_out", func(t *testing.T) {
 		l := newLedger(t)

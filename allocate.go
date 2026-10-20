@@ -1,6 +1,10 @@
 package stock
 
-import "slices"
+import (
+	"slices"
+
+	"webtyp.com/time"
+)
 
 const tolerance = 1e-9
 
@@ -14,7 +18,7 @@ const tolerance = 1e-9
 //   - If the usable stock is smaller than quantity (by more than the package's comparison tolerance, one unexported
 //     named constant of 1e-9) → ErrInsufficient and the returned slice is nil: allocation is all-or-nothing.
 //   - The input slice is never modified or reordered.
-func Allocate(lots []Lot, quantity float64, now int64) ([]Take, error) {
+func Allocate(lots []Lot, quantity float64, now time.Unix) ([]Take, error) {
 	if quantity <= 0 {
 		return nil, ErrQuantity
 	}
