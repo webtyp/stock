@@ -59,7 +59,7 @@ func (m *memLedger) Output(product, location string, mov stock.Movement, quantit
 		}
 	}
 
-	takes, err := stock.Allocate(lots, quantity, time.Now())
+	takes, err := stock.Allocate(lots, quantity, time.Now()/1000000000) // webtyp.com/time counts nanoseconds; expiries are Unix seconds
 	if err != nil {
 		return nil, err
 	}

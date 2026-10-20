@@ -8,6 +8,9 @@ import (
 	"webtyp.com/time"
 )
 
+// nanosPerSecond converts webtyp.com/time.Now() (Unix nanoseconds) to the Unix seconds of an expiry.
+const nanosPerSecond = 1000000000
+
 // Entry is one stored movement, as the ledger reports it.
 type Entry struct {
 	Type     stock.Movement
@@ -34,7 +37,7 @@ type Ledger interface {
 
 // Run executes the whole suite. newLedger returns a fresh, empty ledger for each subtest.
 func Run(t *testing.T, newLedger func(t *testing.T) Ledger) {
-	now := time.Now()
+	now := time.Now() / nanosPerSecond // webtyp.com/time counts nanoseconds; every expiry here is Unix seconds
 	past := now - 365*stock.SecondsPerDay
 	future := now + 365*stock.SecondsPerDay
 
