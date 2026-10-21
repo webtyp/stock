@@ -14,6 +14,11 @@ Pure stock rules shared by pharmacy and supply modules: movement directions, fir
 | Insufficient stock | Returns `ErrInsufficient` if stock is smaller than quantity by more than `1e-9` tolerance. Allocation is all-or-nothing. |
 | Immutability | The input slice is never modified or reordered. |
 
+## Minimum quantity
+
+- `Low(total, minimum)`: at or below the minimum; a minimum of 0 means no minimum.
+- `CrossedLow(before, after, minimum)`: the change that took the total from above the minimum to at or below it — the one moment a "below minimum" alert is due.
+
 ## Usage Example
 
 ```go
